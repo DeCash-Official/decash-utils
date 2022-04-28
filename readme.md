@@ -1,3 +1,7 @@
+![NPM version](https://img.shields.io/npm/v/decash-utils)
+![LICENSE](https://img.shields.io/npm/l/decash-utils)
+![Build & publish](https://github.com/DeCash-Official/decash-utils/actions/workflows/build-and-push.yaml/badge.svg)
+
 # decash-utils
 
 Utilities for building on top of [DeCash](https://decash.com) - the most easy-to-use and technically
@@ -46,3 +50,7 @@ To make a new package version,
 1. Add a new type and add it to the test, ensuring it's exported.
 2. Update the package version in `package.json`.
 3. Push or pull request to `main`.
+
+## License
+
+[MIT](LICENSE) © [DeCash](https://decash.com)

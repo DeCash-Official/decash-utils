@@ -1,6 +1,6 @@
 {
   "name": "decash-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Utilities for DeCash tokens",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -21,14 +21,20 @@
     "url": "git+https://github.com/DeCash-Official/decash-utils.git"
   },
   "keywords": [
-    "types"
+    "decash",
+    "utils",
+    "usdd",
+    "eurd",
+    "stablecoin",
+    "crypto",
+    "cryptocurrency"
   ],
   "author": "DeCash-Official",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DeCash-Official/pkg-decash-types/issues"
+    "url": "https://github.com/DeCash-Official/decash-utils/issues"
   },
-  "homepage": "https://github.com/DeCash-Official/pkg-decash-types#readme",
+  "homepage": "https://github.com/DeCash-Official/decash-utils#readme",
   "devDependencies": {
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
