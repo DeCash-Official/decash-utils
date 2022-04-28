@@ -1,0 +1,4 @@
+{
+  "integrationFolder": "tests/web/specs",
+  "baseUrl": "http://localhost:33195"
+}
