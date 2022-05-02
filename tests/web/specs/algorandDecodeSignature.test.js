@@ -1,6 +1,6 @@
 const { expect } = require('chai');
 
-describe('algorandDecodeSignature', () => {
+describe('library browser compatibility tests', () => {
   beforeEach(() => {
     cy.visit('/');
     cy.contains('This is an integration testing page.');

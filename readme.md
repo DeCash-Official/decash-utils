@@ -63,8 +63,9 @@ const delegatedWalletCode = algorandGetDelegatedWalletLogicSig({
   validatorAppId: 71013728,
 });
 
-const logicSigAccount: LogicSigAccount = new algosdk.LogicSigAccount(
-  delegatedWalletCode
+const logicSigAccount: LogicSigAccount = new LogicSigAccount(
+  delegatedWalletCode,
+  [new Buffer.from('\x00')] // "Self-sign"
 );
 const signedTx = signLogicSigTransaction(txn, logicSigAccount).blob;
 ```
