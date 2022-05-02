@@ -20,6 +20,11 @@ npm install --save decash-utils
 
 ### `algorandDecodeSignature({ logicsig })`
 
+This example demonstrates how to decode a logic signature, which:
+
+1. Shows whether the sender is a Delegated Wallet (when `senderDelegatedWallet` is returned).
+2. Gets properties (like the owner or seed) of this Delegated Wallet.
+
 ```typescript
 import { algorandDecodeSignature } from 'decash-utils';
 
@@ -41,6 +46,27 @@ if (senderDelegatedWallet) {
 } else {
   console.log('The transaction sender is not a DeCash Delegated Wallet.');
 }
+```
+
+### `algorandGetDelegatedWalletLogicSig({ owner, seed, validatorAppId })`
+
+This example demonstrates how to get the logic signature of a DeCash Delegated Wallet,
+which then can be used to sing transaction outgoing from the Delegated Wallet.
+
+```typescript
+import { LogicSigAccount, signLogicSigTransaction } from 'algosdk';
+import { algorandGetDelegatedWalletLogicSig } from 'decash-utils';
+
+const delegatedWalletCode = algorandGetDelegatedWalletLogicSig({
+  owner: '6E63EKJYUPLL4SKM5FNX3PD7HSWZ26XPS7BXYLVWJAPDEK3VA7DERTFV4E',
+  seed: 0,
+  validatorAppId: 71013728,
+});
+
+const logicSigAccount: LogicSigAccount = new algosdk.LogicSigAccount(
+  delegatedWalletCode
+);
+const signedTx = signLogicSigTransaction(txn, logicSigAccount).blob;
 ```
 
 ## Development

@@ -1,7 +1,8 @@
 import { delegatedWalletData } from 'Const';
+import { DelegatedWalletInterpolatedData } from 'Types';
 import {
-  decodeVarInt,
-  getAlgorandAddressFromBytes,
+  decodeType,
+  encodeType,
   uInt8ArrayEquals,
   uInt8ArrayExtract,
   uInt8ArraySubstitute,
@@ -29,8 +30,9 @@ export const algorandDecodeSignature = ({
     return {};
   }
 
-  const templateSigByteArray = Uint8Array.from(atob(logicsig.logic), (c) =>
-    c.charCodeAt(0)
+  const templateSigByteArray = Uint8Array.from(
+    atob(delegatedWalletData.templateBytecodeBase64),
+    (c) => c.charCodeAt(0)
   );
   const sigByteArray = Uint8Array.from(atob(logicsig.logic), (c) =>
     c.charCodeAt(0)
@@ -52,31 +54,47 @@ export const algorandDecodeSignature = ({
   }
 
   type Keys = keyof typeof delegatedWalletData.interpolated;
-  const result: {
-    [key in Keys]: any;
-  } = {} as any;
+  const result: Partial<DelegatedWalletInterpolatedData> = {};
 
   for (const [name, { array }] of Object.entries(extractedSig)) {
-    const interpolation = delegatedWalletData.interpolated[
-      name as Keys
-    ] as unknown as {
-      type: 'address' | 'varint';
-      fromByte: number;
-      lengthBytes: number;
-    };
+    const interpolation = delegatedWalletData.interpolated[name as Keys];
     if (!interpolation) {
       continue;
     }
 
-    result[name as Keys] =
-      interpolation.type === 'varint'
-        ? decodeVarInt(array).int
-        : interpolation.type === 'address'
-        ? getAlgorandAddressFromBytes(array)
-        : '';
+    (result[name as keyof DelegatedWalletInterpolatedData] as any) = decodeType(
+      array,
+      interpolation.type
+    );
   }
 
   return {
-    senderDelegatedWallet: result,
+    senderDelegatedWallet: result as DelegatedWalletInterpolatedData,
   };
+};
+
+export const algorandGetDelegatedWalletLogicSig = (
+  interpolatedData: DelegatedWalletInterpolatedData
+): Uint8Array => {
+  const templateSigByteArray = Uint8Array.from(
+    atob(delegatedWalletData.templateBytecodeBase64),
+    (c) => c.charCodeAt(0)
+  );
+  return uInt8ArraySubstitute(
+    templateSigByteArray,
+    Object.entries(delegatedWalletData.interpolated).map(
+      ([name, { type, fromByte, lengthBytes }]) => {
+        return {
+          at: fromByte,
+          array: encodeType(
+            interpolatedData[name as keyof DelegatedWalletInterpolatedData],
+            type,
+            {
+              padToBytes: lengthBytes,
+            }
+          ),
+        };
+      }
+    )
+  );
 };
