@@ -1,11 +1,14 @@
 import { delegatedWalletData } from 'Const';
+import { sha512_256 } from 'js-sha512';
 import { DelegatedWalletInterpolatedData } from 'Types';
 import {
   decodeType,
   encodeType,
   uInt8ArrayEquals,
   uInt8ArrayExtract,
+  uInt8ArraysConcat,
   uInt8ArraySubstitute,
+  uInt8ArrayToAlgorandAddress,
 } from 'Utils';
 
 export const algorandDecodeSignature = ({
@@ -94,4 +97,16 @@ export const algorandGetDelegatedWalletLogicSig = (
       }
     )
   );
+};
+
+const PROGRAM = Uint8Array.from([80, 114, 111, 103, 114, 97, 109]); // Literally, "Program" written in the buffer.
+export const algorandGetDelegatedWalletAddress = (
+  data: DelegatedWalletInterpolatedData
+): string => {
+  const toSign = uInt8ArraysConcat(
+    PROGRAM,
+    algorandGetDelegatedWalletLogicSig(data)
+  );
+  const signed = sha512_256.array(toSign);
+  return uInt8ArrayToAlgorandAddress(Uint8Array.from(signed));
 };
