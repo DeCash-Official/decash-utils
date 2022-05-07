@@ -54,10 +54,22 @@ export const uInt8ArrayEquals = (
   return true;
 };
 
+export const uInt8ArrayToBase64 = (arr: Uint8Array): string => {
+  return btoa(String.fromCharCode.apply(String, arr as unknown as number[]));
+};
+
+export const base64ToUInt8Array = (string: string): Uint8Array => {
+  return Uint8Array.from(
+    atob(string)
+      .split('')
+      .map((c) => c.charCodeAt(0))
+  );
+};
+
 const RFC4648 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
 const RFC4648_HEX = '0123456789ABCDEFGHIJKLMNOPQRSTUV';
 const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
-export const base32Encode = (
+export const uInt8ArrayToBase32 = (
   data: Uint8Array,
   {
     padding,
@@ -124,7 +136,7 @@ function readChar(alphabet: string, char: string) {
   }
   return idx;
 }
-export const base32Decode = (
+export const base32ToUInt8Array = (
   input: string,
   {
     variant = 'RFC3548',

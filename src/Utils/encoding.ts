@@ -1,11 +1,14 @@
-import { decodeAlgorandAddress, encodeAlgorandAddress } from './address';
-import { varIntDecode, varIntEncode } from './varint';
+import {
+  algorandAddressToUInt8Array,
+  uInt8ArrayToAlgorandAddress,
+} from './address';
+import { uInt8ArrayToVarInt, varIntToUInt8Array } from './varint';
 
 export const decodeType = (array: Uint8Array, type: 'varint' | 'address') => {
   return type === 'varint'
-    ? varIntDecode(array).int
+    ? uInt8ArrayToVarInt(array)
     : type === 'address'
-    ? decodeAlgorandAddress(array)
+    ? uInt8ArrayToAlgorandAddress(array)
     : '';
 };
 
@@ -15,8 +18,8 @@ export const encodeType = (
   { padToBytes }: { padToBytes?: number } = {}
 ) => {
   return type === 'varint'
-    ? varIntEncode(+value, { padToBytes }).buf
+    ? varIntToUInt8Array(+value, { padToBytes })
     : type === 'address'
-    ? encodeAlgorandAddress(value.toString())
+    ? algorandAddressToUInt8Array(value.toString())
     : new Uint8Array(0);
 };

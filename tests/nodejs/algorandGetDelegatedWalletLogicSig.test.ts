@@ -5,7 +5,6 @@ describe('algorandGetDelegatedWalletLogicSig', () => {
   it('gets correct logic sig', () => {
     const array = algorandGetDelegatedWalletLogicSig({
       owner: 'ZLU7SRAKBPOGHEYQIQW4LDXVJUVSWXC6GCSODYWKICKX5UPSGGGYQCH654',
-      seed: 0,
       validatorAppId: 71013728,
     });
     const base64 = btoa(String.fromCharCode(...array));
