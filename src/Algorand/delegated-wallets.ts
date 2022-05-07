@@ -19,7 +19,7 @@ export const algorandDecodeSignature = ({
     logic: string;
   };
 }): {
-  senderDelegatedWallet?: DelegatedWalletInterpolatedData;
+  senderDelegatedWallet?: Required<DelegatedWalletInterpolatedData>;
 } => {
   if (
     !logicsig ||
@@ -68,7 +68,7 @@ export const algorandDecodeSignature = ({
   }
 
   return {
-    senderDelegatedWallet: result as DelegatedWalletInterpolatedData,
+    senderDelegatedWallet: result as Required<DelegatedWalletInterpolatedData>,
   };
 };
 

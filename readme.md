@@ -103,9 +103,9 @@ import {
 
 To make a new package version,
 
-1. Add a new type and add it to the test, ensuring it's exported.
+1. Add your new code and tests.
 2. Update the package version in `package.json`.
-3. Push or pull request to `main`.
+3. Push or pull request to `main`. The package will be deployed by GitHub Workflows.
 
 ## License
 
