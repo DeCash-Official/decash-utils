@@ -1,5 +1,5 @@
 export type DelegatedWalletInterpolatedData = {
   owner: string;
-  seed: number;
+  seed?: number;
   validatorAppId: number;
 };

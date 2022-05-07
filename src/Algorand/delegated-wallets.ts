@@ -16,11 +16,7 @@ export const algorandDecodeSignature = ({
     logic: string;
   };
 }): {
-  senderDelegatedWallet?: {
-    owner: string;
-    seed: number;
-    validatorAppId: number;
-  };
+  senderDelegatedWallet?: DelegatedWalletInterpolatedData;
 } => {
   if (
     !logicsig ||
@@ -80,6 +76,7 @@ export const algorandGetDelegatedWalletLogicSig = (
     atob(delegatedWalletData.templateBytecodeBase64),
     (c) => c.charCodeAt(0)
   );
+  interpolatedData.seed = interpolatedData.seed || 0;
   return uInt8ArraySubstitute(
     templateSigByteArray,
     Object.entries(delegatedWalletData.interpolated).map(
@@ -87,7 +84,7 @@ export const algorandGetDelegatedWalletLogicSig = (
         return {
           at: fromByte,
           array: encodeType(
-            interpolatedData[name as keyof DelegatedWalletInterpolatedData],
+            interpolatedData[name as keyof DelegatedWalletInterpolatedData]!,
             type,
             {
               padToBytes: lengthBytes,

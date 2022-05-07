@@ -58,9 +58,9 @@ import { LogicSigAccount, signLogicSigTransaction } from 'algosdk';
 import { algorandGetDelegatedWalletLogicSig } from 'decash-utils';
 
 const delegatedWalletCode = algorandGetDelegatedWalletLogicSig({
-  owner: '6E63EKJYUPLL4SKM5FNX3PD7HSWZ26XPS7BXYLVWJAPDEK3VA7DERTFV4E',
-  seed: 0,
-  validatorAppId: 71013728,
+  owner: '6E63EKJYUPLL4SKM5FNX3PD7HSWZ26XPS7BXYLVWJAPDEK3VA7DERTFV4E', // The owner of the delegated wallet.
+  seed: 0, // Optional. Default is 0.
+  validatorAppId: 71013728, // Network-dependent. Get the validator APP ID from https://docs.decash.com/docs/concepts/delegated-wallets#verifier
 });
 
 const logicSigAccount: LogicSigAccount = new LogicSigAccount(
