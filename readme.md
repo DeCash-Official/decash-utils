@@ -48,6 +48,20 @@ if (senderDelegatedWallet) {
 }
 ```
 
+### `algorandGetDelegatedWalletAddress({ owner, seed, validatorAppId })`
+
+Returns the address of the Delegated Wallet with the given owner, validatorAppId and optional seed.
+
+```typescript
+import { algorandGetDelegatedWalletAddress } from 'decash-utils';
+
+const address = algorandGetDelegatedWalletAddress({
+  owner: 'ZLU7SRAKBPOGHEYQIQW4LDXVJUVSWXC6GCSODYWKICKX5UPSGGGYQCH654',
+  validatorAppId: 71013728, // Network-dependent. Get the validator APP ID from https://docs.decash.com/docs/concepts/delegated-wallets#verifier
+});
+// address = 'QCLGDBMIGC5EV4WA4J4TZCUKZURQ5BORMC3WQYBWJCXDILCDQFLPMT4ZCE'
+```
+
 ### `algorandGetDelegatedWalletLogicSig({ owner, seed, validatorAppId })`
 
 This example demonstrates how to get the logic signature of a DeCash Delegated Wallet,
