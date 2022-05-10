@@ -72,14 +72,17 @@ export const algorandDecodeSignature = ({
   };
 };
 
+/** Get the Delegated Wallet's logic signature. */
 export const algorandGetDelegatedWalletLogicSig = (
   interpolatedData: DelegatedWalletInterpolatedData
 ): Uint8Array => {
+  interpolatedData.seed = interpolatedData.seed || 0;
+
   const templateSigByteArray = Uint8Array.from(
     atob(delegatedWalletData.templateBytecodeBase64),
     (c) => c.charCodeAt(0)
   );
-  interpolatedData.seed = interpolatedData.seed || 0;
+
   return uInt8ArraySubstitute(
     templateSigByteArray,
     Object.entries(delegatedWalletData.interpolated).map(

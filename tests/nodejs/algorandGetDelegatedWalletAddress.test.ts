@@ -9,7 +9,7 @@ describe('algorandGetDelegatedWalletAddress', () => {
     });
 
     expect(address).to.be.equal(
-      'QCLGDBMIGC5EV4WA4J4TZCUKZURQ5BORMC3WQYBWJCXDILCDQFLPMT4ZCE'
+      'FL5EXREPO2BDHU4VN5HGPVSJJFHY3THYJXPHPSQGXSQUN3CNP6RYTAW24M'
     );
   });
 });
