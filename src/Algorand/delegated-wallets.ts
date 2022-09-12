@@ -3,13 +3,13 @@ import { sha512_256 } from 'js-sha512';
 import { DelegatedWalletInterpolatedData } from 'Types';
 import {
   decodeType,
-  encodeType,
   uInt8ArrayEquals,
   uInt8ArrayExtract,
   uInt8ArraysConcat,
   uInt8ArraySubstitute,
   uInt8ArrayToAlgorandAddress,
 } from 'Utils';
+import { initializeBinaryContract } from 'Utils/contracts';
 
 export const algorandDecodeSignature = ({
   logicsig,
@@ -72,43 +72,13 @@ export const algorandDecodeSignature = ({
   };
 };
 
-/** Get the Delegated Wallet's logic signature. */
-export const algorandGetDelegatedWalletLogicSig = (
-  interpolatedData: DelegatedWalletInterpolatedData
-): Uint8Array => {
-  interpolatedData.seed = interpolatedData.seed || 0;
-
-  const templateSigByteArray = Uint8Array.from(
-    atob(delegatedWalletData.templateBytecodeBase64),
-    (c) => c.charCodeAt(0)
-  );
-
-  return uInt8ArraySubstitute(
-    templateSigByteArray,
-    Object.entries(delegatedWalletData.interpolated).map(
-      ([name, { type, fromByte, lengthBytes }]) => {
-        return {
-          at: fromByte,
-          array: encodeType(
-            interpolatedData[name as keyof DelegatedWalletInterpolatedData]!,
-            type,
-            {
-              padToBytes: lengthBytes,
-            }
-          ),
-        };
-      }
-    )
-  );
-};
-
 const PROGRAM = Uint8Array.from([80, 114, 111, 103, 114, 97, 109]); // Literally, "Program" written in the buffer.
 export const algorandGetDelegatedWalletAddress = (
   data: DelegatedWalletInterpolatedData
 ): string => {
   const toSign = uInt8ArraysConcat(
     PROGRAM,
-    algorandGetDelegatedWalletLogicSig(data)
+    initializeBinaryContract(delegatedWalletData, data)
   );
   const signed = sha512_256.array(toSign);
   return uInt8ArrayToAlgorandAddress(Uint8Array.from(signed));
