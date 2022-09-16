@@ -72,6 +72,14 @@ export const algorandDecodeSignature = ({
   };
 };
 
+export const algorandGetDelegatedWalletLogicSig = (
+  interpolatedData: DelegatedWalletInterpolatedData
+): Uint8Array => {
+  interpolatedData.seed = interpolatedData.seed || 0;
+
+  return initializeBinaryContract(delegatedWalletData, interpolatedData)
+};
+
 const PROGRAM = Uint8Array.from([80, 114, 111, 103, 114, 97, 109]); // Literally, "Program" written in the buffer.
 export const algorandGetDelegatedWalletAddress = (
   data: DelegatedWalletInterpolatedData
