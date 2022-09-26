@@ -3,6 +3,8 @@ export {
   algorandAddressToUInt8Array,
   base32ToUInt8Array,
   base64ToUInt8Array,
+  getStatelessContractAddress,
+  initializeBinaryContract,
   uInt8ArrayToAlgorandAddress,
   uInt8ArrayToBase32,
   uInt8ArrayToBase64,
