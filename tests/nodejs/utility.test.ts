@@ -9,6 +9,7 @@ import {
   uInt8ArrayToVarInt,
   varIntToUInt8Array,
   initializeBinaryContract,
+  getStatelessContractAddress
 } from '../../lib';
 import { uInt8ArrayEquals, uInt8ArraysConcat } from '../../lib/Utils';
 
@@ -67,6 +68,7 @@ describe('Utility functions', () => {
         },
       },
     };
+    
     const result = initializeBinaryContract(template, {
       test_a: 'PUQHXUYYKNFSMQ4PTNT647WOKZ2622OZDBDXNIPJJIZJR6YUI3WQICVFHA',
       test_b: 245
@@ -82,4 +84,43 @@ describe('Utility functions', () => {
       base64ToUInt8Array(btoa('^[]{}@#'))
     ))).to.be.equal(true);
   })
+
+  it('Get contract address', () => {
+    const delegatedWalletData: {
+      templateBytecodeBase64: string;
+      interpolated: {
+        [key: string]: {
+          type: 'address' | 'varint';
+          fromByte: number;
+          lengthBytes: number;
+        };
+      };
+    } = {
+      templateBytecodeBase64:
+        'BSACAAEmASB1mkiAY4klIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAChIge3qufvFrNmyc0gxIDIDEkQtFyMSQACHLRciEkAAeAAiNQA0ADIEDEEAfjQAOBCBBhJAAA8iQAAJNAAjCDUAQv/hI0M0ADgYgfLohaOWjduwdhJAAAQiQv/cNAA4GzEWDUAABCJC/840ADEWwhpXAAE0AUAAG4ABThJAAAQiQv+1NAA0AMIaVwABgAF2EkL/pYABWUL/4ogAEDUBQv+BMRcuKAQ1AUL/dwAiNQA0ADIEDEEAFDQAOAAoEkAACTQAIwg1AEL/5iOJIok=',
+      interpolated: {
+        owner: {
+          type: 'address',
+          fromByte: 8,
+          lengthBytes: 32,
+        },
+        seed: {
+          type: 'varint',
+          fromByte: 43,
+          lengthBytes: 9,
+        },
+        validatorAppId: {
+          type: 'varint',
+          fromByte: 115,
+          lengthBytes: 9,
+        },
+      },
+    };
+    
+    expect(getStatelessContractAddress(delegatedWalletData, {
+      owner: 'LX2XVJP7F5TQVOJ6DL4NPR5RH77XEG5US76WL7LIJL7OW6YPXDNPGIFWPM',
+      seed: 1,
+      validatorAppId: 71013728, 
+    })).to.be.equal('SWJOJZ5EVZMA54CNL32JTA524N2VM3THLAM6BZZR7Q7YW63BLLBHHMO7XI')
+  });
 });

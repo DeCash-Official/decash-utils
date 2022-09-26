@@ -9,7 +9,7 @@ import {
   uInt8ArraySubstitute,
   uInt8ArrayToAlgorandAddress,
 } from 'Utils';
-import { initializeBinaryContract } from 'Utils/contracts';
+import { initializeBinaryContract, getStatelessContractAddress } from 'Utils/contracts';
 
 export const algorandDecodeSignature = ({
   logicsig,
@@ -80,14 +80,10 @@ export const algorandGetDelegatedWalletLogicSig = (
   return initializeBinaryContract(delegatedWalletData, interpolatedData)
 };
 
-const PROGRAM = Uint8Array.from([80, 114, 111, 103, 114, 97, 109]); // Literally, "Program" written in the buffer.
 export const algorandGetDelegatedWalletAddress = (
-  data: DelegatedWalletInterpolatedData
+  interpolatedData: DelegatedWalletInterpolatedData
 ): string => {
-  const toSign = uInt8ArraysConcat(
-    PROGRAM,
-    initializeBinaryContract(delegatedWalletData, data)
-  );
-  const signed = sha512_256.array(toSign);
-  return uInt8ArrayToAlgorandAddress(Uint8Array.from(signed));
+  interpolatedData.seed = interpolatedData.seed || 0;
+
+  return getStatelessContractAddress(delegatedWalletData, interpolatedData)
 };
